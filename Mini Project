@@ -1,0 +1,39 @@
+# Best Fit Memory Allocation
+
+def best_fit(memory_blocks, processes):
+    # Keep track of allocation
+    allocation = [-1] * len(processes)
+
+    # Iterate through each process
+    for i, process in enumerate(processes):
+        best_block_index = -1
+
+        # Find the best fit block for the current process
+        for j, block in enumerate(memory_blocks):
+            if block >= process:
+                if best_block_index == -1 or memory_blocks[best_block_index] > block:
+                    best_block_index = j
+
+        # If a suitable block is found, allocate it
+        if best_block_index != -1:
+            allocation[i] = best_block_index
+            memory_blocks[best_block_index] -= process
+
+    return allocation, memory_blocks
+
+# Example input
+memory_blocks = [200, 300, 400, 100, 150]
+processes = [120, 250, 50]
+
+# Run the Best Fit algorithm
+allocation, remaining_blocks = best_fit(memory_blocks, processes)
+
+# Output results
+print("Process Allocation:")
+for i, alloc in enumerate(allocation):
+    if alloc != -1:
+        print(f"Process {i+1} (Size: {processes[i]} KB) -> Block {alloc+1}")
+    else:
+        print(f"Process {i+1} (Size: {processes[i]} KB) -> Not Allocated")
+
+print("\nRemaining Memory Blocks:", remaining_blocks)
